@@ -1,5 +1,5 @@
 __docformat__ = "restructuredtext en"
-from time import time, clock, localtime
+from time import time, localtime
 from numpy import asfarray, nan, ones, all, atleast_1d, any, isnan, \
 array_equal, asscalar, asarray, ndarray, isscalar, seterr, isinf,inf#, where
 import numpy as np
@@ -125,7 +125,7 @@ def runProbSolver(p_, solver_str_or_instance=None, *args, **kwargs):
     setSomeDefaults(p)
     
     T = time()
-    C = clock()
+    C = time()
     try:
         p._Prepare()
     except OpenOptException as ooe:
@@ -134,7 +134,7 @@ def runProbSolver(p_, solver_str_or_instance=None, *args, **kwargs):
         p.err(fde.msg)
     
     p.initTime = time() - T
-    p.initCPUTime = clock() - C
+    p.initCPUTime = time() - C
     if p.initTime > 1 or p.initCPUTime > 1:
         p.disp('Initialization: Time = %0.1f CPUTime = %0.1f' % (p.initTime, p.initCPUTime))
         
@@ -226,7 +226,7 @@ def runProbSolver(p_, solver_str_or_instance=None, *args, **kwargs):
         p.contol *= ConTolMultiplier
 
     p.timeStart = time()
-    p.cpuTimeStart = clock()
+    p.cpuTimeStart = time()
     
     # TODO: move it into solver parameters
     if p.probType not in ('MINLP', 'IP'):
@@ -463,7 +463,7 @@ def finalGUIroutines(p):
     if p.isManagerUsed: 
         p.GUI_items['Quit'].config(state='normal')
         p.GUI_items['time'].set('%d' % (time() - p.timeStart))
-        p.GUI_items['cputime'].set('%d' % (clock() - p.cpuTimeStart))
+        p.GUI_items['cputime'].set('%d' % (time() - p.cpuTimeStart))
     elif p.plot:
         finalShow(p)
         
@@ -594,4 +594,3 @@ def setSomeDefaults(p):
         p.graphics.xlabel = p.xlabel
     if p.graphics.xlabel == 'nf': 
         p.iterValues.nf = [] # iter ObjFunc evaluation number
-
